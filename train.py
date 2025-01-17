@@ -5,12 +5,31 @@ from data.datasets.ACDC.ACDCDataset import ACDCDataset
 from data.Dataloader import get_dataloader
 from model.LeNet import LeNet
 from model.FCN import FCN32s
+from model.encoder.vit import load_custom_vit
 import sys
 
 
 def init_weights(m):
         if type(m) == nn.Linear or type(m) == nn.Conv2d:
             nn.init.xavier_uniform_(m.weight)
+
+def trainer_one_epoch(model, epoch, train_dataloader, optimizer, loss):
+    for i in range(epoch):
+        model.train()
+        for index, [features, labels] in enumerate(train_dataloader):
+            # load data in gpu
+            features, labels = features.cuda(), labels.cuda()
+
+            output = model()
+
+            predict = torch.argmax(output, dim=1).float()
+
+            l = loss(output, labels)
+            print(f"epoch: {i}, loss: {l}")
+            l.backward()
+            optimizer.step()
+            optimizer.zero_grad()
+
 
 
 def trainer(model):
@@ -23,24 +42,14 @@ def trainer(model):
 
     optimizer = optim.AdamW(params=model.parameters(), lr=0.001, weight_decay=0.0001)
     loss = nn.CrossEntropyLoss()
+    trainer_one_epoch(model, epoch, train_dataloader, optimizer, loss)
 
-    for i in range(epoch):
-        model.train()
-        for index, [features, labels] in enumerate(train_dataloader):
-            features, labels = features.cuda(), labels.cuda()
-            output = model(features)
-            predict = torch.argmax(output, dim=1).float()
-            print(output.shape, predict.shape, labels.shape)
-            print(predict)
-            l = loss(output, labels)
-            print(f"epoch: {i}, loss: {l}")
-            l.backward()
-            optimizer.step()
-            optimizer.zero_grad()
 
 
 if __name__ == "__main__":
+    checkpoint_path = ''
     #model = LeNet(in_channels=1)
-    model = FCN32s(pretrained_net = nn.Conv2d(1, 512, kernel_size=1), n_class=5)
+    device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    model = FCN32s(load_custom_vit(checkpoint_path, num_classes=5, device=device), n_class=5)
     model.cuda()
     trainer(model=model)
