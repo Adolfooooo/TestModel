@@ -5,7 +5,7 @@ from data.datasets.ACDC.ACDCDataset import ACDCDataset
 from data.Dataloader import get_dataloader
 from model.LeNet import LeNet
 from model.FCN import FCN32s
-from model.encoder.vit import load_custom_vit
+from model.encoder.pvt import pvt_v2_b2, model_update
 import sys
 
 
@@ -50,6 +50,6 @@ if __name__ == "__main__":
     checkpoint_path = ''
     #model = LeNet(in_channels=1)
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    model = FCN32s(load_custom_vit(checkpoint_path, num_classes=5, device=device), n_class=5)
+    model = FCN32s(model_update(backbone=pvt_v2_b2(), checkpoint_path=''), n_class=5)
     model.cuda()
     trainer(model=model)

@@ -29,7 +29,7 @@ class FCN32s(nn.Module):
         # print(output['x4'].shape)
 #        x4 = output['x4']  # size=(N, 512, x.H/32, x.W/32)
         #print(x5.shape)
-        score = self.bn1(self.relu(self.deconv1(output)))     # size=(N, 512, x.H/16, x.W/16)
+        score = self.bn1(self.relu(self.deconv1(output['x4'])))     # size=(N, 512, x.H/16, x.W/16)
         #print(score.shape)
         score = self.bn2(self.relu(self.deconv2(score)))  # size=(N, 256, x.H/8, x.W/8)
         #print(score.shape)
