@@ -20,6 +20,7 @@ class FCN32s(nn.Module):
         self.bn5     = nn.BatchNorm2d(32)
         self.classifier = nn.Conv2d(32, n_class, kernel_size=1)
         self.sigmoid = nn.Sigmoid()
+
         
         self.conv = nn.Conv2d(1, 3, kernel_size=1, stride=1)
     def forward(self, x):
