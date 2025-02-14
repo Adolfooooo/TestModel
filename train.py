@@ -8,12 +8,15 @@ from model.FCN import FCN32s
 from model.encoder.pvt import pvt_v2_b2, model_update
 from utils.log import get_logger
 from utils.metric import IOUMetric
+from utils.pytorch_visualization import visualize_feature_maps, visualize_labels_feature_maps
+
 import sys
 
 
 def init_weights(m):
-        if type(m) == nn.Linear or type(m) == nn.Conv2d:
-            nn.init.xavier_uniform_(m.weight)
+    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+        nn.init.xavier_uniform_(m.weight)
+
 
 def train_epochs(model, epoch, train_dataloader, optimizer, loss, num_classes, logger):
     for i in range(epoch):
@@ -25,7 +28,7 @@ def train_epochs(model, epoch, train_dataloader, optimizer, loss, num_classes, l
             features, labels = features.cuda(), labels.cuda()
 
             output = model(features)
-
+            
             predict = torch.argmax(output, dim=1).float()
 
             l = loss(output, labels)
@@ -37,13 +40,12 @@ def train_epochs(model, epoch, train_dataloader, optimizer, loss, num_classes, l
         with torch.no_grad():
             acc, acc_cls, iu, mean_iu, fwavacc = iou_metric.evaluate()
             logger.info(f"acc: {acc}, acc_cls: {acc_cls}, iu: {iu}, mean_iu: {mean_iu}, fwavacc:{fwavacc}")
-
-
+            
 
 def trainer(model, logger):
     # model.apply(init_weights)
 
-    epoch = 200
+    epoch = 100
     # train_dataloader, test_dataloader = load_datasets()
     train_dataset, test_dataset = ACDCDataset("../ACDC/train"), ACDCDataset("../ACDC/test")
     train_dataloader = get_dataloader(train_dataset, batch_size=4)
@@ -52,6 +54,9 @@ def trainer(model, logger):
     loss = nn.CrossEntropyLoss()
     train_epochs(model, epoch, train_dataloader, optimizer, loss, num_classes=4, logger=logger)
 
+    # save model, and there are save two kinds of model
+    torch.save(model, 'whole_model.pth')
+    torch.save(model.state_dict(), 'model_params.pth')
 
 
 if __name__ == "__main__":

@@ -34,16 +34,22 @@ class IOUMetric:
         self.hist = np.zeros((num_classes, num_classes))
 
     def _fast_hist(self, label_pred, label_true):
+        
         # Convert inputs to integer type before calculation
         label_pred = label_pred.astype(np.int64)
         label_true = label_true.astype(np.int64)
         
-        mask = (label_true >= 0) & (label_true < self.num_classes)
+        mask = (label_true > 0) & (label_true < self.num_classes)
         hist = np.bincount(
             self.num_classes * label_true[mask].astype(int) +
             label_pred[mask], minlength=self.num_classes ** 2).reshape(self.num_classes, self.num_classes)
         return hist
 
+    """
+    ACDC Dataset:
+    predictions shape:(4, 224, 224)
+    gts shape:(4, 224, 224)
+    """
     def add_batch(self, predictions, gts):
         if not isinstance(predictions, np.ndarray):
             predictions = np.array(predictions)
@@ -56,6 +62,7 @@ class IOUMetric:
         acc = np.diag(self.hist).sum() / self.hist.sum()
         acc_cls = np.diag(self.hist) / self.hist.sum(axis=1)
         acc_cls = np.nanmean(acc_cls)
+        # ?怎么做到的
         iu = np.diag(self.hist) / (self.hist.sum(axis=1) + self.hist.sum(axis=0) - np.diag(self.hist))
         mean_iu = np.nanmean(iu)
         freq = self.hist.sum(axis=1) / self.hist.sum()
