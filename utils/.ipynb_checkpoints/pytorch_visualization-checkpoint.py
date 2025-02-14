@@ -29,7 +29,11 @@ class FeatureExtractor():
         _ = self.model(x)
         return self.features
 
+<<<<<<< HEAD
 def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15), pic_name="feature_map"):
+=======
+def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15)):
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     """可视化特征图
     Args:
         feature_maps: 特征图张量 (batch_size, channels, height, width)
@@ -67,10 +71,17 @@ def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15), pic_
 
     plt.tight_layout()
     plt.show()
+<<<<<<< HEAD
     plt.savefig(f"{pic_name}.png")
 
 
 def visualize_labels_feature_maps(feature_maps, figsize=(15, 15), pic_name="label"):
+=======
+    plt.savefig(f'feature_map.png')
+
+
+def visualize_labels_feature_maps(feature_maps, figsize=(15, 15)):
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     """可视化特征图
     Args:
         feature_maps: 特征图张量 (batch_size, channels, height, width)
@@ -108,7 +119,11 @@ def visualize_labels_feature_maps(feature_maps, figsize=(15, 15), pic_name="labe
     
     plt.tight_layout()
     plt.show()
+<<<<<<< HEAD
     plt.savefig(f'{pic_name}.png')
+=======
+    plt.savefig(f'label.png')
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
 
 
 # 使用示例

@@ -2,7 +2,11 @@ import numpy as np
 import torch
 from torch.utils.data import Dataset, DataLoader
 import os
+<<<<<<< HEAD
 from utils.pytorch_visualization import visualize_feature_maps, visualize_non_channel_feature_maps
+=======
+
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
 
 '''
 npz: ['img', 'label']
@@ -30,7 +34,10 @@ class ACDCDataset(Dataset):
         data = np.load(file_path)
         
         # 获取图像和标签
+<<<<<<< HEAD
         # image, data: (224,224), (224,224)
+=======
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
         image = data['img']  # 假设npz文件中的图像数据键名为'image'
         label = data['label']  # 假设npz文件中的标签数据键名为'label'
         
@@ -41,12 +48,20 @@ class ACDCDataset(Dataset):
         # 如果是灰度图像，添加通道维度
         if len(image.shape) == 2:
             image = image.unsqueeze(0)
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
         # 应用数据转换
         if self.transforms:
             for transform in self.transforms:
                 image = transform(image)
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
         return image, label
 
 
