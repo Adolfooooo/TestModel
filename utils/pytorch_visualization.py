@@ -29,11 +29,7 @@ class FeatureExtractor():
         _ = self.model(x)
         return self.features
 
-<<<<<<< HEAD
 def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15), pic_name="feature_map", is_batch=True):
-=======
-def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15)):
->>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     """可视化特征图
     Args:
         feature_maps: 特征图张量 (batch_size, channels, height, width)
@@ -45,14 +41,10 @@ def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15)):
         feature_maps = feature_maps.detach().cpu().numpy()
     
     # 获取第一个样本的特征图
-<<<<<<< HEAD
     if is_batch:
         first_feature_maps = feature_maps[0]
     else:
         first_feature_maps = feature_maps
-=======
-    first_feature_maps = feature_maps[0]
->>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     
     # 确定要显示的通道数量
     n_channels = min(num_channels, first_feature_maps.shape[0])
@@ -78,18 +70,11 @@ def visualize_feature_maps(feature_maps, num_channels=16, figsize=(15, 15)):
 
     plt.tight_layout()
     plt.show()
-<<<<<<< HEAD
     plt.savefig(f"{pic_name}.png")
     plt.close()
 
 
 def visualize_non_channel_feature_maps(feature_maps, figsize=(15, 15), pic_name="label", is_batch=True):
-=======
-    plt.savefig(f'feature_map.png')
-
-
-def visualize_labels_feature_maps(feature_maps, figsize=(15, 15)):
->>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     """可视化特征图
     Args:
         feature_maps: 特征图张量 (batch_size, channels, height, width)
@@ -101,16 +86,11 @@ def visualize_labels_feature_maps(feature_maps, figsize=(15, 15)):
         feature_maps = feature_maps.detach().cpu().numpy()
     
     # 获取第一个样本的特征图
-<<<<<<< HEAD
     if is_batch:
         first_feature_maps = feature_maps[0]
     else:
         first_feature_maps = feature_maps
         
-=======
-    first_feature_maps = feature_maps[0]
-    
->>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
     # 确定要显示的通道数量
     n_channels = 1
     
@@ -135,12 +115,8 @@ def visualize_labels_feature_maps(feature_maps, figsize=(15, 15)):
     
     plt.tight_layout()
     plt.show()
-<<<<<<< HEAD
     plt.savefig(f'{pic_name}.png')
     plt.close()
-=======
-    plt.savefig(f'label.png')
->>>>>>> 5be4e51c81e0465f8886ad2379c1c218fb96eb33
 
 
 # 使用示例
